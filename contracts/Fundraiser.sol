@@ -8,8 +8,12 @@ contract Fundraiser {
     manager = msg.sender;
   }
 
-  function setOrganization(address orgAddress) public {
+  modifier restricted() {
     require(manager == msg.sender);
+    _;
+  }
+
+  function setOrganization(address orgAddress) public restricted {
     organization = orgAddress;
   }
 }
