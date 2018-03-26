@@ -53,5 +53,8 @@ contract('Fundraiser', (accounts) => {
       const newBalance = await web3.eth.getBalance(accounts[2]);
       assert(newBalance.gt(oldBalance), 'new balance is greater than old balance');
     });
+
+    xit('adds a new donation record to the contract', async () => {});
+    xit('increments donationsCount', async () => {});
   });
 });
