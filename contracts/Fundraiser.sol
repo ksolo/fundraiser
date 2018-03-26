@@ -16,4 +16,8 @@ contract Fundraiser {
   function setOrganization(address orgAddress) public restricted {
     organization = orgAddress;
   }
+
+  function donate(uint exchangeRate) public payable {
+    organization.transfer(msg.value);
+  }
 }

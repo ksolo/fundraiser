@@ -17,7 +17,7 @@ contract('Fundraiser', (accounts) => {
     assert(parseInt(address), 'has a manager after intialization');
   });
 
-  describe('#setOrganization(address orgAddress)', () => {
+  contract('#setOrganization(address orgAddress)', () => {
     it('requires manager to set organization', async () => {
       const organizationAddress = accounts[1];
       const manager = accounts[0];
@@ -40,6 +40,18 @@ contract('Fundraiser', (accounts) => {
 
       assert.equal(currentOrganization, newOrganization, 'updated organization');
       assert.notEqual(currentOrganization, oldOrganization);
+    });
+  });
+
+  contract('#donate(uint currentExchangeRate)', async () => {
+    it('transfers ether to organization', async () => {
+      await fundraiser.setOrganization(accounts[2], { from: accounts[0] });
+      const oldBalance = await web3.eth.getBalance(accounts[2]);
+
+      await fundraiser.donate.sendTransaction(54200, { from: accounts[4], value: '50000000' });
+
+      const newBalance = await web3.eth.getBalance(accounts[2]);
+      assert(newBalance.gt(oldBalance), 'new balance is greater than old balance');
     });
   });
 });
