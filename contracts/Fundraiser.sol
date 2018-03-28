@@ -1,13 +1,11 @@
 pragma solidity ^0.4.19;
 
+import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
+
 // Goal: Fundraiser is used to help create a mechanism for non-profit
 // oranganization to collect ethereum contributions. It records each
 // transaction allowing receipt generation.
-contract Fundraiser {
-  // the manager is the person that is administering the contract
-  // and deploying it on behalf of the organization
-  address public manager;
-
+contract Fundraiser is Ownable {
   // the organization represents the address where funds are transfered
   address public organization;
 
@@ -31,19 +29,8 @@ contract Fundraiser {
   // notifies the client that the donation has been completed
   event DonationReceived();
 
-  // initialize the manager at time of deployment
-  function Fundraiser() public {
-    manager = msg.sender;
-  }
-
-  // used to limit certain actions to the manager
-  modifier restricted() {
-    require(manager == msg.sender);
-    _;
-  }
-
   // update the organization's address
-  function setOrganization(address orgAddress) public restricted {
+  function setOrganization(address orgAddress) public onlyOwner {
     organization = orgAddress;
   }
 

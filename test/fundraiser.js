@@ -11,8 +11,8 @@ contract('Fundraiser', (accounts) => {
     assert(fundraiser, 'instance has been deployed');
   });
 
-  it('initializes with a manager', async () => {
-    const address = await fundraiser.manager();
+  it('initializes with an owner', async () => {
+    const address = await fundraiser.owner();
 
     assert(parseInt(address), 'has a manager after intialization');
   });
