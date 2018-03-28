@@ -55,11 +55,17 @@ contract('Fundraiser', (accounts) => {
     });
 
     it('emits DonationReceived event', async () => {
-        const transaction = await fundraiser.donate(54200, { from: accounts[4], value: '5000000'})
-        assert.equal(transaction.logs[0].event, 'DonationReceived');
+      const transaction = await fundraiser.donate(54200, { from: accounts[4], value: '5000000'})
+      assert.equal(transaction.logs[0].event, 'DonationReceived');
     });
 
 
-    xit('adds a new donation record to the contract', async () => {});
+    it('adds a new donation record to the contract', async () => {
+      const beforeCount = await fundraiser.donationsCount();
+      await fundraiser.donate(54200, { from: accounts[4], value: '50000000'});
+      const afterCount = await fundraiser.donationsCount();
+
+      assert(beforeCount.plus(1).eq(afterCount), 'donations have been incremented');
+    });
   });
 });
