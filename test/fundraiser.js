@@ -54,7 +54,12 @@ contract('Fundraiser', (accounts) => {
       assert(newBalance.gt(oldBalance), 'new balance is greater than old balance');
     });
 
+    it('emits DonationReceived event', async () => {
+        const transaction = await fundraiser.donate(54200, { from: accounts[4], value: '5000000'})
+        assert.equal(transaction.logs[0].event, 'DonationReceived');
+    });
+
+
     xit('adds a new donation record to the contract', async () => {});
-    xit('increments donationsCount', async () => {});
   });
 });
