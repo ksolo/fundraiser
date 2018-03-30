@@ -30,7 +30,7 @@ contract Fundraiser is Ownable {
   event DonationReceived();
 
   // pass donation records to front-end
-  event FetchedDonations(Donation[] donations);
+  event FetchedDonations(Donation[] _donationRecords);
 
   // update the organization's address
   function setOrganization(address orgAddress) public onlyOwner {
@@ -50,15 +50,15 @@ contract Fundraiser is Ownable {
   }
 
   // currently cannot return a collection of structs from a contract
-  // this function emits and event that will contain the data
+  // this function emits an event that will contain the donation data
   function emitDonations(address donor) public {
     uint256[] storage donorIndexes = donationIndexes[donor];
-    Donation[] memory donationRecords = new Donation[](donorIndexes.length);
+    Donation[] memory _donationRecords = new Donation[](donorIndexes.length);
 
     for(uint256 i = 0; i < donorIndexes.length; i++) {
-      donationRecords[i] = donations[donorIndexes[i]];
+      _donationRecords[i] = donations[donorIndexes[i]];
     }
 
-    FetchedDonations(donationRecords);
+    FetchedDonations(_donationRecords);
   }
 }

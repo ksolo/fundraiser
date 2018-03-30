@@ -70,12 +70,14 @@ contract('Fundraiser', (accounts) => {
   });
 
   contract('#emitDonations(address donor)', () => {
+    beforeEach(async () => {
+      await fundraiser.setOrganization(accounts[1]);
+      await fundraiser.donate(54200, { from: accounts[2], value: '50000000'});
+    });
+
     it('emits FetchedDonations', async () => {
-      await fundraiser.donate(54200, { from: accounts[5], value: '50000000'});
-      const transaction = await fundraiser.emitDonations(accounts[5], { from: accounts[1], gas: '1000000' });
-
+      const transaction = await fundraiser.emitDonations(accounts[2], {from: accounts[0]});
       console.log(transaction);
-
       assert(transaction.logs[0].event === 'FetchedDonations', 'FetchedDonations was emitted');
     });
   });
