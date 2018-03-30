@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.21;
 
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
@@ -29,9 +29,6 @@ contract Fundraiser is Ownable {
   // notifies the client that the donation has been completed
   event DonationReceived();
 
-  // pass donation records to front-end
-  event FetchedDonations(Donation[] _donationRecords);
-
   // update the organization's address
   function setOrganization(address orgAddress) public onlyOwner {
     organization = orgAddress;
@@ -46,19 +43,10 @@ contract Fundraiser is Ownable {
     donationIndexes[msg.sender].push(donationsCount);
     donationsCount = donations.push(donation); // push returns the new length
 
-    DonationReceived();
+    emit DonationReceived();
   }
 
-  // currently cannot return a collection of structs from a contract
-  // this function emits an event that will contain the donation data
-  function emitDonations(address donor) public {
-    uint256[] storage donorIndexes = donationIndexes[donor];
-    Donation[] memory _donationRecords = new Donation[](donorIndexes.length);
-
-    for(uint256 i = 0; i < donorIndexes.length; i++) {
-      _donationRecords[i] = donations[donorIndexes[i]];
-    }
-
-    FetchedDonations(_donationRecords);
+  function donationIndexesForDonor(address donor) public view returns(uint256[]) {
+    return donationIndexes[donor];
   }
 }

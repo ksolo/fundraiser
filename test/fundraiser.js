@@ -69,16 +69,14 @@ contract('Fundraiser', (accounts) => {
     });
   });
 
-  contract('#emitDonations(address donor)', () => {
-    beforeEach(async () => {
-      await fundraiser.setOrganization(accounts[1]);
-      await fundraiser.donate(54200, { from: accounts[2], value: '50000000'});
-    });
-
-    it('emits FetchedDonations', async () => {
-      const transaction = await fundraiser.emitDonations(accounts[2], {from: accounts[0]});
-      console.log(transaction);
-      assert(transaction.logs[0].event === 'FetchedDonations', 'FetchedDonations was emitted');
+  contract('#donationIndexesForDonor(address donor)', () => {
+    it('returns a collection of donation indexes for a donor', async () => {
+      await fundraiser.donate(54200, {from: accounts[4], value: '50000000'});
+      let indexes = await fundraiser.donationIndexesForDonor(accounts[4]);
+      indexes = indexes.map((bignum) => bignum.toNumber());
+      
+      assert.deepEqual(indexes, [0], 'expected indexes match')
     });
   });
+
 });
