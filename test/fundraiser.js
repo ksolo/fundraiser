@@ -68,4 +68,15 @@ contract('Fundraiser', (accounts) => {
       assert(beforeCount.plus(1).eq(afterCount), 'donations have been incremented');
     });
   });
+
+  contract('#emitDonations(address donor)', () => {
+    it('emits FetchedDonations', async () => {
+      await fundraiser.donate(54200, { from: accounts[5], value: '50000000'});
+      const transaction = await fundraiser.emitDonations(accounts[5], { from: accounts[1], gas: '1000000' });
+
+      console.log(transaction);
+
+      assert(transaction.logs[0].event === 'FetchedDonations', 'FetchedDonations was emitted');
+    });
+  });
 });
